@@ -23,11 +23,15 @@ log_mel_student = getMFCCBands2DMadmom(os.path.join(wav_path, artist_name, aria_
 
 nested_syllable_lists_teacher = \
     parse_syllable_line_list(ground_truth_text_grid_file=
-                             os.path.join(textgrid_path, artist_name, aria_anme, "teacher.textgrid"))
+                             os.path.join(textgrid_path, artist_name, aria_anme, "teacher.textgrid"),
+                             parent_tier="line",
+                             child_tier="dianSilence")
 
 nested_syllable_lists_student = \
     parse_syllable_line_list(ground_truth_text_grid_file=
-                             os.path.join(textgrid_path, artist_name, aria_anme, "student01.textgrid"))
+                             os.path.join(textgrid_path, artist_name, aria_anme, "student01.textgrid"),
+                             parent_tier="line",
+                             child_tier="dianSilence")
 
 print(nested_syllable_lists_teacher)
 print(nested_syllable_lists_student)

@@ -7,6 +7,7 @@ sys.path.append(utilsPath)
 
 import textgrid as tgp
 
+
 def textGrid2WordList(textgrid_file, whichTier = 'pinyin', utf16 = True):
     '''
     parse textGrid into a python list of tokens 
@@ -20,11 +21,11 @@ def textGrid2WordList(textgrid_file, whichTier = 'pinyin', utf16 = True):
     else:
         par_obj = tgp.TextGrid.load(textgrid_file)	#loading the object
 
-    tiers= tgp.TextGrid._find_tiers(par_obj)	#finding existing tiers		
-	
+    tiers = tgp.TextGrid._find_tiers(par_obj)	#finding existing tiers
+
     isTierFound = False
     for tier in tiers:
-        tierName= tier.tier_name().replace('.','')
+        tierName= tier.tier_name().replace('.', '')
         #iterating over tiers and selecting the one specified
         if tierName == whichTier:
             isTierFound = True
@@ -37,7 +38,8 @@ def textGrid2WordList(textgrid_file, whichTier = 'pinyin', utf16 = True):
     if not isTierFound:
         print ('Missing tier {1} in file {0}' .format(textgrid_file, whichTier))
 
-    return beginTsAndWordList
+    return beginTsAndWordList, isTierFound
+
 
 def line2WordList(line, entireWordList):
     '''

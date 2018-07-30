@@ -1,15 +1,23 @@
+import os
 from src.textgridParser import textGrid2WordList
 from src.textgridParser import wordListsParseByLines
 
 
-def parse_syllable_line_list(ground_truth_text_grid_file):
-    # parse line
-    line_list = textGrid2WordList(ground_truth_text_grid_file, whichTier='line')
+def parse_syllable_line_list(ground_truth_text_grid_file, parent_tier, child_tier):
 
-    # parse syllable
-    syllable_list = textGrid2WordList(ground_truth_text_grid_file, whichTier='dianSilence')
+    if not os.path.isfile(ground_truth_text_grid_file):
+        is_file_exist = False
+        return False, is_file_exist, False
+    else:
+        is_file_exist = True
 
-    # parse lines of ground truth
-    nested_syllable_lists, _, _ = wordListsParseByLines(line_list, syllable_list)
+        # parse line
+        line_list, _ = textGrid2WordList(ground_truth_text_grid_file, whichTier=parent_tier)
 
-    return nested_syllable_lists
+        # parse syllable
+        syllable_list, is_syllable_found = textGrid2WordList(ground_truth_text_grid_file, whichTier=child_tier)
+
+        # parse lines of ground truth
+        nested_syllable_lists, _, _ = wordListsParseByLines(line_list, syllable_list)
+
+        return nested_syllable_lists, is_file_exist, is_syllable_found
