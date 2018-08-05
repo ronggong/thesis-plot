@@ -1,7 +1,7 @@
 import os
 from src.audio_preprocessing import getMFCCBands2DMadmom
 from src.textgrid_preprocessing import parse_syllable_line_list
-from general.plot_two_spectrograms import plot_two_spectro_onsets
+from general.plot_spectrograms import plot_two_spectro_onsets
 from parameters import *
 from file_path import *
 

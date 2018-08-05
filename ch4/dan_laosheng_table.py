@@ -8,8 +8,8 @@ recordings_laosheng = open_csv_recordings("dataset - laosheng.csv")
 recordings_dan = open_csv_recordings("dataset - dan.csv")
 
 song_dur, melodic_line_dur_list, syllable_dur_list, phoneme_dur_list, dict_phoneme_dur = \
-    dur_stats(recordings=recordings_dan,
-              role_type="danAll")
+    dur_stats(recordings=recordings_laosheng,
+              role_type="laosheng")
 
 melodic_line_dur_min, melodic_line_dur_max, melodic_line_dur_mean, melodic_line_dur_std = \
         min(melodic_line_dur_list), max(melodic_line_dur_list), \

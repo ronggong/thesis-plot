@@ -62,16 +62,16 @@ def dur_stats(recordings, role_type):
         if "." in filename:
             filename = os.path.splitext(filename)[0]
 
-        textgrid_folder = os.path.join(data_path, textgrid_folder, sub_folder, filename + ".textgrid")
+        textgrid_filename = os.path.join(data_path, textgrid_folder, sub_folder, filename + ".textgrid")
         wav_filename = os.path.join(data_path, wav_folder, sub_folder, filename + ".wav")
 
         nested_syllable_list, is_file_exist, is_syllable_found = \
-            parse_syllable_line_list(ground_truth_text_grid_file=textgrid_folder,
+            parse_syllable_line_list(ground_truth_text_grid_file=textgrid_filename,
                                      parent_tier="line",
                                      child_tier=syllable_tier)
 
         nested_phoneme_list, is_file_exist, is_phoneme_found = \
-            parse_syllable_line_list(ground_truth_text_grid_file=textgrid_folder,
+            parse_syllable_line_list(ground_truth_text_grid_file=textgrid_filename,
                                      parent_tier="line",
                                      child_tier=phoneme_tier)
 
