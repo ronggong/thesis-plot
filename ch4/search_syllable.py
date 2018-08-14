@@ -1,3 +1,7 @@
+"""
+This function used in thesis chapter 4 section 4.2.1
+Dataset fro automatic syllable and phoneme segmentation
+"""
 from file_path import *
 from src.textgrid_preprocessing import parse_syllable_line_list
 
