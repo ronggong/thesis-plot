@@ -77,10 +77,20 @@ if __name__ == "__main__":
     num_jiantuan = 0
     num_phoneme = 0
 
+    num_mis_special = 0
+    num_mis_jiantuan = 0
+
     list_special = []
     list_jian = []
 
-    for rec in recordings_train+recordings_test:
+    train_test = "test"
+
+    if train_test == "train":
+        recordings = recordings_train
+    else:
+        recordings = recordings_test
+
+    for rec in recordings:
         data_path, sub_folder, textgrid_folder, \
         wav_folder, filename, line_tier, longsyllable_tier, syllable_tier, \
         phoneme_tier, special_tier, special_class_tier = parse_recordings(rec)
@@ -107,6 +117,17 @@ if __name__ == "__main__":
                                      parent_tier=longsyllable_tier,
                                      child_tier=phoneme_tier)
 
+        if train_test == "test":
+            nested_special_teacher_list, is_file_exist, is_special_teacher_found = \
+                parse_syllable_line_list(ground_truth_text_grid_file=textgrid_filename,
+                                         parent_tier=longsyllable_tier,
+                                         child_tier="specialTeacher")
+
+            nested_special_class_teacher_list, is_file_exist, is_special_class_teacher_found = \
+                parse_syllable_line_list(ground_truth_text_grid_file=textgrid_filename,
+                                         parent_tier=longsyllable_tier,
+                                         child_tier="specialClassTeacher")
+
         for ii_line in range(len(nested_special_list)):
             line_special_list = nested_special_list[ii_line]
             if line_special_list[0][2] != "1":
@@ -117,12 +138,30 @@ if __name__ == "__main__":
                 num_syllable += len(line_syllable_list[1])
                 num_phoneme += len(line_phoneme_list[1])
 
+                if train_test == "test":
+                    line_special_teacher_list = nested_special_teacher_list[ii_line]
+                    line_specialClass_teacher_list = nested_special_class_teacher_list[ii_line]
+
                 for ii_syl in range(len(line_specialClass_list[1])):
                     special_class = line_specialClass_list[1][ii_syl][2]
                     try:
                         syllable = line_syllable_list[1][ii_syl][2]
                     except IndexError:
                         raise IndexError(rec, ii_line)
+
+                    # the statistics of the mispronunciation
+                    if train_test == "test":
+                        if line_specialClass_teacher_list[1][ii_syl][2] == "1":
+                            # print(line_special_list[1][ii_syl][2])
+                            # print(line_special_teacher_list[1][ii_syl][2])
+                            if line_special_list[1][ii_syl][2] != line_special_teacher_list[1][ii_syl][2]:
+                                num_mis_special += 1
+                        elif line_specialClass_teacher_list[1][ii_syl][2] == "2":
+                            if line_special_list[1][ii_syl][2] != line_special_teacher_list[1][ii_syl][2]:
+                                num_mis_jiantuan += 1
+                        else:
+                            pass
+
                     if special_class == "1":  # shangkou
                         num_special += 1
                         shangkou = line_special_list[1][ii_syl][2]
@@ -143,6 +182,8 @@ if __name__ == "__main__":
     print(sorted_dict_special)
     print(sorted_dict_jiantuan)
     print(num_line, num_syllable, num_special, num_jiantuan, num_phoneme)
+    if train_test == "test":
+        print(num_mis_special, num_mis_jiantuan)
 
     # special_list = [sp[0] for sp in sorted_dict_special]
     # special_num = [sp[1] for sp in sorted_dict_special]
@@ -152,13 +193,13 @@ if __name__ == "__main__":
     # jiantuan_num = [jt[1] for jt in sorted_dict_jiantuan]
     # plot_h_bar(jiantuan_list, jiantuan_num, (5, 4), "jiantuan_syllable.png")
 
-    list_special_unique = unique_list(list_special)
-    list_jian_unique = unique_list(list_jian)
-
-    print(list_special_unique)
-    print(list_jian_unique)
-
-    write_csv_two_columns_list(two_columns_list=list_special_unique,
-                               filename="special_unique.csv")
-    write_csv_two_columns_list(two_columns_list=list_jian_unique,
-                               filename="jian_unique.csv")
+    # list_special_unique = unique_list(list_special)
+    # list_jian_unique = unique_list(list_jian)
+    #
+    # print(list_special_unique)
+    # print(list_jian_unique)
+    #
+    # write_csv_two_columns_list(two_columns_list=list_special_unique,
+    #                            filename="special_unique.csv")
+    # write_csv_two_columns_list(two_columns_list=list_jian_unique,
+    #                            filename="jian_unique.csv")
