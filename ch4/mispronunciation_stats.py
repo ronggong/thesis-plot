@@ -77,8 +77,10 @@ if __name__ == "__main__":
     num_jiantuan = 0
     num_phoneme = 0
 
-    num_mis_special = 0
-    num_mis_jiantuan = 0
+    num_mis_special = 0  # number of mispronunced special syllables
+    num_mis_jiantuan = 0  # number of mispronunced jiantuan syllables
+    num_correct_special = 0  # number of correctly pronunced special syllables
+    num_correct_jiantuan = 0  # number of correctly pronunced jiantuan syllables
 
     list_special = []
     list_jian = []
@@ -156,9 +158,13 @@ if __name__ == "__main__":
                             # print(line_special_teacher_list[1][ii_syl][2])
                             if line_special_list[1][ii_syl][2] != line_special_teacher_list[1][ii_syl][2]:
                                 num_mis_special += 1
+                            else:
+                                num_correct_special += 1
                         elif line_specialClass_teacher_list[1][ii_syl][2] == "2":
                             if line_special_list[1][ii_syl][2] != line_special_teacher_list[1][ii_syl][2]:
                                 num_mis_jiantuan += 1
+                            else:
+                                num_correct_jiantuan += 1
                         else:
                             pass
 
@@ -183,7 +189,7 @@ if __name__ == "__main__":
     print(sorted_dict_jiantuan)
     print(num_line, num_syllable, num_special, num_jiantuan, num_phoneme)
     if train_test == "test":
-        print(num_mis_special, num_mis_jiantuan)
+        print(num_mis_special, num_mis_jiantuan, num_correct_special, num_correct_jiantuan)
 
     # special_list = [sp[0] for sp in sorted_dict_special]
     # special_num = [sp[1] for sp in sorted_dict_special]
